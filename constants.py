@@ -1,0 +1,25 @@
+﻿# Game
+TICK_SPEED = 30
+MOVE_SPEED = 10
+
+# Q Learning
+Q_VALUES_N = 100
+FRAME_SPEED = 50000
+
+# Display Sizes
+DIS_WIDTH = 600
+DIS_HEIGHT = 400
+BLOCK_SIZE = 10
+
+# Colors
+RED = (255, 0, 0)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (50, 153, 213)
+WHITE = (255, 255, 255)
+
+# Directions
+LEFT = -MOVE_SPEED
+RIGHT = MOVE_SPEED
+UP = -MOVE_SPEED
+DOWN = MOVE_SPEED
