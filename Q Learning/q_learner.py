@@ -2,7 +2,7 @@
 import random
 import pickle
 
-from direction import Direction
+from Common.direction import Direction
 from no_visual_snake import NoVisualSnake
 
 

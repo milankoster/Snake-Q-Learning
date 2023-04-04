@@ -2,8 +2,8 @@
 
 import pygame
 
-from direction import Direction
-from constants import *
+from Common.direction import Direction
+from Common.constants import *
 
 
 class ManualSnake:

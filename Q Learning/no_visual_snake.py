@@ -1,7 +1,7 @@
 ﻿import random
 
-from constants import *
-from direction import Direction
+from Common.constants import *
+from Common.direction import Direction
 
 
 class NoVisualSnake:

@@ -1,5 +1,5 @@
 ﻿# Press the green button in the gutter to run the script.
-from manual_snake import ManualSnake
+from Manual.manual_snake import ManualSnake
 
 if __name__ == '__main__':
     snake = ManualSnake()
