@@ -2,8 +2,8 @@
 import random
 import pickle
 
-from Common.direction import Direction
-from QLearning.no_visual_snake import NoVisualSnake
+from common.direction import Direction
+from qlearning.no_visual_snake import NoVisualSnake
 
 
 class QLearner:

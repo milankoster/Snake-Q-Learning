@@ -1,8 +1,8 @@
 ﻿import pygame
 import random
 
-from Common.constants import *
-from Common.direction import Direction
+from common.constants import *
+from common.direction import Direction
 
 
 class Snake:
