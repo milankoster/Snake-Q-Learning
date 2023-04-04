@@ -6,10 +6,9 @@ from Common.direction import Direction
 
 class NoVisualSnake:
     def __init__(self):
-
         # Game State
-        self.input_direction = None
         self.alive = True
+        self.alive_duration = 0
         self.score = 0
 
         # Snake
@@ -74,11 +73,11 @@ class NoVisualSnake:
             self.is_safe(snake_head_x, snake_head_y - 1),
             int(self.food_x < snake_head_x),
             int(self.food_y < snake_head_y),
-            # int(self.food_x > snake_head[0]),
-            # int(self.food_y > snake_head[1]),
+            int(self.food_x > snake_head[0]),
+            int(self.food_y > snake_head[1]),
         ]
 
-        return state
+        return tuple(state)
 
     def is_safe(self, x, y):
         if self.collision(x, y):
@@ -109,22 +108,8 @@ class NoVisualSnake:
 
         if not self.alive:
             reward = -10
+        self.alive_duration += 1
 
         return self.get_state(), reward, self.alive
 
     # TODO new game run that loops and gets final length
-    # def game_loop(self):
-    #     while self.alive:
-    #         self.step()
-    #
-    #         self.move_snake()
-    #         self.check_collision()
-    #
-    #         self.eat_food()
-    #         self.handle_tail()
-    #
-    #     quit()
-
-    # TODO: :Load model
-    def load_model(self):
-        return
