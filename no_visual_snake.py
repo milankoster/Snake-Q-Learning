@@ -1,6 +1,7 @@
 ﻿import random
 
 from constants import *
+from direction import Direction
 
 
 class Snake:
@@ -15,8 +16,7 @@ class Snake:
         self.snake_list = []
         self.pos_x = DIS_WIDTH / 2
         self.pos_y = DIS_HEIGHT / 2
-        self.move_x = 0
-        self.move_y = 0
+        self.direction = None
 
         # Create first food
         self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
@@ -27,8 +27,15 @@ class Snake:
         return
 
     def move_snake(self):
-        self.pos_x += self.move_x
-        self.pos_y += self.move_y
+        if self.direction == Direction.LEFT:
+            self.pos_x += MOVE_LEFT
+        elif self.direction == Direction.RIGHT:
+            self.pos_x += MOVE_RIGHT
+        elif self.direction == Direction.UP:
+            self.pos_y += MOVE_UP
+        elif self.direction == Direction.DOWN:
+            self.pos_y += MOVE_DOWN
+
         snake_head = [self.pos_x, self.pos_y]
         self.snake_list.append(snake_head)
 

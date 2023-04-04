@@ -1,6 +1,8 @@
-﻿import pygame
-import random
+﻿import random
 
+import pygame
+
+from direction import Direction
 from constants import *
 
 
@@ -22,16 +24,22 @@ class ManualSnake:
         self.snake_list = []
         self.pos_x = DIS_WIDTH / 2
         self.pos_y = DIS_HEIGHT / 2
-        self.move_x = 0
-        self.move_y = 0
+        self.direction = None
 
         # Create first food
         self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
         self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
 
     def move_snake(self):
-        self.pos_x += self.move_x
-        self.pos_y += self.move_y
+        if self.direction == Direction.LEFT:
+            self.pos_x += MOVE_LEFT
+        elif self.direction == Direction.RIGHT:
+            self.pos_x += MOVE_RIGHT
+        elif self.direction == Direction.UP:
+            self.pos_y += MOVE_UP
+        elif self.direction == Direction.DOWN:
+            self.pos_y += MOVE_DOWN
+
         snake_head = [self.pos_x, self.pos_y]
         self.snake_list.append(snake_head)
 
@@ -79,8 +87,7 @@ class ManualSnake:
         self.snake_list = []
         self.pos_x = DIS_WIDTH / 2
         self.pos_y = DIS_HEIGHT / 2
-        self.move_x = 0
-        self.move_y = 0
+        self.direction = None
 
         self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
         self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
@@ -95,18 +102,14 @@ class ManualSnake:
         if event.type == pygame.QUIT:
             self.game_close = True
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and self.move_x != RIGHT:
-                self.move_x = LEFT
-                self.move_y = 0
-            elif event.key == pygame.K_RIGHT and self.move_x != LEFT:
-                self.move_x = RIGHT
-                self.move_y = 0
-            elif event.key == pygame.K_UP and self.move_y != DOWN:
-                self.move_y = UP
-                self.move_x = 0
-            elif event.key == pygame.K_DOWN and self.move_y != UP:
-                self.move_y = DOWN
-                self.move_x = 0
+            if event.key == pygame.K_LEFT and Direction.RIGHT:
+                self.direction = Direction.LEFT
+            elif event.key == pygame.K_RIGHT and Direction.LEFT:
+                self.direction = Direction.RIGHT
+            elif event.key == pygame.K_UP and Direction.DOWN:
+                self.direction = Direction.UP
+            elif event.key == pygame.K_DOWN and Direction.UP:
+                self.direction = Direction.DOWN
 
     def game_loop(self):
         self.reset_game()
@@ -146,4 +149,3 @@ class ManualSnake:
 
         pygame.quit()
         quit()
-
