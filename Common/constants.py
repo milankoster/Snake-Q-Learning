@@ -2,10 +2,6 @@
 TICK_SPEED = 30
 MOVE_SPEED = 10
 
-# Q Learning
-Q_VALUES_N = 100
-FRAME_SPEED = 50000
-
 # Display Sizes
 DIS_WIDTH = 600
 DIS_HEIGHT = 400
