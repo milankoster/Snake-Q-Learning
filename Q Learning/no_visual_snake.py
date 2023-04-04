@@ -32,14 +32,14 @@ class NoVisualSnake:
         elif self.direction == Direction.DOWN:
             self.pos_y += MOVE_DOWN
 
-        self.snake_list.append(self.snake_head)
+        self.snake_list.append(self.snake_head())
 
-    def check_collision(self):
-        if self.pos_x >= DIS_WIDTH or self.pos_x < 0 or self.pos_y >= DIS_HEIGHT or self.pos_y < 0:
-            self.alive = False
+    def collision(self, x, y):
+        if x >= DIS_WIDTH or x < 0 or y >= DIS_HEIGHT or y < 0:
+            return True
 
-        if self.snake_head in self.snake_list[:-1]:
-            self.alive = False
+        if [x, y] in self.snake_list[:-1]:
+            return True
 
     def eat_food(self):
         if self.pos_x == self.food_x and self.pos_y == self.food_y:
@@ -60,50 +60,30 @@ class NoVisualSnake:
         return self.score + 1
 
     def get_state(self):
-        return
+        snake_head = self.snake_head()
+        snake_head_x, snake_head_y = snake_head[0], snake_head[1]
 
-    # def _GetState(self, snake, food):
-    #     snake_head = snake[-1]
-    #     dist_x = food[0] - snake_head[0]
-    #     dist_y = food[1] - snake_head[1]
-    #
-    #     if dist_x > 0:
-    #         pos_x = '1'  # Food is to the right of the snake
-    #     elif dist_x < 0:
-    #         pos_x = '0'  # Food is to the left of the snake
-    #     else:
-    #         pos_x = 'NA'  # Food and snake are on the same X file
-    #
-    #     if dist_y > 0:
-    #         pos_y = '3'  # Food is below snake
-    #     elif dist_y < 0:
-    #         pos_y = '2'  # Food is above snake
-    #     else:
-    #         pos_y = 'NA'  # Food and snake are on the same Y file
-    #
-    #     sqs = [
-    #         (snake_head[0] - self.block_size, snake_head[1]),
-    #         (snake_head[0] + self.block_size, snake_head[1]),
-    #         (snake_head[0], snake_head[1] - self.block_size),
-    #         (snake_head[0], snake_head[1] + self.block_size),
-    #     ]
-    #
-    #     surrounding_list = []
-    #     for sq in sqs:
-    #         if sq[0] < 0 or sq[1] < 0:  # off screen left or top
-    #             surrounding_list.append('1')
-    #         elif sq[0] >= self.display_width or sq[1] >= self.display_height:  # off screen right or bottom
-    #             surrounding_list.append('1')
-    #         elif sq in snake[:-1]:  # part of tail
-    #             surrounding_list.append('1')
-    #         else:
-    #             surrounding_list.append('0')
-    #     surroundings = ''.join(surrounding_list)
-    #
-    #     return GameState((dist_x, dist_y), (pos_x, pos_y), surroundings, food)
-    #
-    # def _GetStateStr(self, state):
-    #     return str((state.position[0], state.position[1], state.surroundings))
+        state = [
+            int(self.direction == Direction.LEFT),
+            int(self.direction == Direction.RIGHT),
+            int(self.direction == Direction.UP),
+            int(self.direction == Direction.DOWN),
+            self.is_safe(snake_head_x + 1, snake_head_y),
+            self.is_safe(snake_head_x - 1, snake_head_y),
+            self.is_safe(snake_head_x, snake_head_y + 1),
+            self.is_safe(snake_head_x, snake_head_y - 1),
+            int(self.food_x < snake_head_x),
+            int(self.food_y < snake_head_y),
+            # int(self.food_x > snake_head[0]),
+            # int(self.food_y > snake_head[1]),
+        ]
+
+        return state
+
+    def is_safe(self, x, y):
+        if self.collision(x, y):
+            return 0
+        return 1
 
     def step(self, action):
         reward = 0
@@ -118,7 +98,9 @@ class NoVisualSnake:
             self.input_direction = Direction.DOWN
 
         self.move_snake()
-        self.check_collision()
+
+        if self.collision(self.pos_x, self.pos_y):
+            self.alive = False
 
         if self.eat_food():
             reward = 1
