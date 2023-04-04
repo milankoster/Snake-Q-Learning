@@ -92,9 +92,9 @@ class NoVisualSnake:
         elif action == Direction.RIGHT and self.direction != Direction.LEFT:
             self.direction = Direction.RIGHT
         elif action == Direction.UP and self.direction != Direction.DOWN:
-            self.input_direction = Direction.UP
+            self.direction = Direction.UP
         elif action == Direction.DOWN and self.direction != Direction.UP:
-            self.input_direction = Direction.DOWN
+            self.direction = Direction.DOWN
 
         self.move_snake()
 
