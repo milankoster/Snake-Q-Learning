@@ -30,7 +30,7 @@ class Snake:
         self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
 
     # TODO: Q Learning Action
-    def handle_action(self):
+    def step(self):
         return
 
     def move_snake(self):
@@ -80,7 +80,7 @@ class Snake:
 
     def game_loop(self):
         while self.alive:
-            self.handle_action()
+            self.step()
 
             self.move_snake()
             self.check_collision()
