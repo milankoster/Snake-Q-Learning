@@ -73,8 +73,8 @@ class NoVisualSnake:
             self.is_safe(snake_head_x, snake_head_y - 1),
             int(self.food_x < snake_head_x),
             int(self.food_y < snake_head_y),
-            int(self.food_x > snake_head[0]),
-            int(self.food_y > snake_head[1]),
+            int(self.food_x > snake_head_x),
+            int(self.food_y > snake_head_y),
         ]
 
         return tuple(state)
