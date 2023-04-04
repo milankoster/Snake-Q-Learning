@@ -3,7 +3,7 @@ import random
 import pickle
 
 from Common.direction import Direction
-from no_visual_snake import NoVisualSnake
+from QLearning.no_visual_snake import NoVisualSnake
 
 
 class QLearner:
@@ -24,42 +24,43 @@ class QLearner:
     def get_action(self, state):
         # select random action (exploration)
         if random.random() < self.eps:
-            return random.choice([Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN])
+            return random.choice([0, 1, 2, 3])
 
         # select best action (exploitation)
         return np.argmax(self.q_table[state])
 
     def print_update(self, episode):
-        if episode % 25 == 0:
+        if episode % 100 == 0:
             print(
-                f"Episodes: {episode}, score: {np.mean(self.score)}, survived: {np.mean(self.survived)},"
-                f" eps: {self.eps}, lr: {self.learning_rate}")
+                f"Episodes: {episode}. Average score: {np.mean(self.score[-100:])}, "
+                f"Max Score: {np.max(self.score[-100:])}. Survival duration: {np.mean(self.survived[-100:])}."
+                f" eps: {self.eps}")
             self.score = []
             self.survived = []
 
     def save_model(self, episode):
         if episode % 500 == 0:
-            with open(f'pickle/{episode}.pickle', 'wb') as file:
+            with open(f'pickle/qlearning/{episode}.pickle', 'wb') as file:
                 pickle.dump(self.q_table, file)
 
     def train(self):
         for episode in range(1, self.num_episodes + 1):
-            steps_without_food = 0
-
             self.env = NoVisualSnake()
-            self.eps = max(self.eps * self.eps_discount, self.min_eps)
 
             self.print_update(episode)
             self.save_model(episode)
 
+            steps_without_food = 0
             snake_length = self.env.snake_length()
             current_state = self.env.get_state()
+            self.eps = max(self.eps * self.eps_discount, self.min_eps)
 
-            done = False
-            while not done:
+            alive = True
+            while alive:
                 # choose action and take it
                 action = self.get_action(current_state)
-                new_state, reward, done = self.env.step(action)
+
+                new_state, reward, alive = self.env.step(Direction(action))
 
                 # Bellman Equation Update
                 self.q_table[current_state][action] = (1 - self.learning_rate) \
@@ -68,8 +69,8 @@ class QLearner:
                 current_state = new_state
 
                 steps_without_food += 1
-                if snake_length != self.env.snake_length:
-                    snake_length = self.env.snake_length
+                if snake_length != self.env.snake_length():
+                    snake_length = self.env.snake_length()
                     steps_without_food = 0
 
                 if steps_without_food == 1000:
@@ -77,4 +78,4 @@ class QLearner:
 
             # keep track of important metrics
             self.score.append(self.env.snake_length() - 1)
-            self.survived.append(self.env.alive)
+            self.survived.append(self.env.alive_duration)
