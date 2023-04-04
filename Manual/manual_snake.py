@@ -136,12 +136,11 @@ class ManualSnake:
             for event in pygame.event.get():
                 self.handle_input(event)
 
-            self.check_collision()
-
             self.move_snake()
-
             self.handle_food()
             self.handle_tail()
+
+            self.check_collision()
 
             self.display.fill(BLUE)
             self.draw_food()
