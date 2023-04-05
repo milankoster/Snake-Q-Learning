@@ -4,7 +4,7 @@ from common.constants import *
 from snake.base_snake import BaseSnake
 
 
-class SnakeVisualiser(BaseSnake):
+class BaseVisualiser(BaseSnake):
     def __init__(self):
         super().__init__()
         pygame.init()
@@ -15,6 +15,10 @@ class SnakeVisualiser(BaseSnake):
 
     def draw_score(self, score, x, y):
         value = self.score_font.render(f"Score: {score}", True, WHITE)
+        self.display.blit(value, [x, y])
+
+    def draw_episode(self, epi, x, y):
+        value = self.score_font.render(f"Gen: {epi}", True, WHITE)
         self.display.blit(value, [x, y])
 
     def draw_snake(self, snake_list):

@@ -3,7 +3,7 @@ import random
 import pickle
 
 from common.direction import Direction
-from snake.snake_trainer import SnakeTrainer
+from qlearning.q_trainer import SnakeTrainer
 
 
 class QLearner:

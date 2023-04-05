@@ -4,10 +4,10 @@ import pygame
 
 from common.constants import *
 from common.direction import Direction
-from snake.snake_visualiser import SnakeVisualiser
+from snake.base_visualiser import BaseVisualiser
 
 
-class ManualSnake(SnakeVisualiser):
+class ManualSnake(BaseVisualiser):
     def __init__(self):
         super().__init__()
         pygame.display.set_caption('Manual Snake')
