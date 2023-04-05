@@ -2,7 +2,6 @@
 
 import numpy as np
 
-from common.constants import *
 from common.direction import Direction
 from snake.base_snake import BaseSnake
 

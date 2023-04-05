@@ -38,6 +38,8 @@ class BaseSnake:
             self.food_x = round(random.randrange(0, DIS_WIDTH - MOVE_SPEED) / 10.0) * 10.0
             self.food_y = round(random.randrange(0, DIS_HEIGHT - MOVE_SPEED) / 10.0) * 10.0
             self.score += 1
+            return True
+        return False
 
     def handle_tail(self):
         if len(self.snake_list) > self.snake_length():
