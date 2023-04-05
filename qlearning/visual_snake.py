@@ -1,11 +1,14 @@
-﻿import pygame
+﻿import pickle
 import random
+import numpy as np
+
+import pygame
 
 from common.constants import *
 from common.direction import Direction
 
 
-class Snake:
+class VisualSnake:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Snake with Q Learning')
@@ -16,7 +19,6 @@ class Snake:
 
         # Game State
         self.alive = True
-        self.cause_of_death = None
         self.score = 0
 
         # Snake
@@ -29,9 +31,15 @@ class Snake:
         self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
         self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
 
-    # TODO: Q Learning Action
-    def step(self):
-        return
+    def handle_action(self, action):
+        if action == Direction.LEFT and self.direction != Direction.RIGHT:
+            self.direction = Direction.LEFT
+        elif action == Direction.RIGHT and self.direction != Direction.LEFT:
+            self.direction = Direction.RIGHT
+        elif action == Direction.UP and self.direction != Direction.DOWN:
+            self.direction = Direction.UP
+        elif action == Direction.DOWN and self.direction != Direction.UP:
+            self.direction = Direction.DOWN
 
     def move_snake(self):
         if self.direction == Direction.LEFT:
@@ -46,30 +54,62 @@ class Snake:
         snake_head = [self.pos_x, self.pos_y]
         self.snake_list.append(snake_head)
 
-    def check_collision(self):
-        if self.pos_x >= DIS_WIDTH or self.pos_x < 0 or self.pos_y >= DIS_HEIGHT or self.pos_y < 0:
-            self.alive = False
-            self.cause_of_death = 'Out of bounds'
-
-        snake_head = [self.pos_x, self.pos_y]
-        if snake_head in self.snake_list[:-1]:
-            self.alive = False
-            self.cause_of_death = 'Hit Tail'
-
-    def handle_food(self):
+    def eat_food(self):
         if self.pos_x == self.food_x and self.pos_y == self.food_y:
             self.food_x = round(random.randrange(0, DIS_WIDTH - MOVE_SPEED) / 10.0) * 10.0
             self.food_y = round(random.randrange(0, DIS_HEIGHT - MOVE_SPEED) / 10.0) * 10.0
             self.score += 1
 
     def handle_tail(self):
-        snake_length = self.score + 1
-        if len(self.snake_list) > snake_length:
+        if len(self.snake_list) > self.snake_length():
             del self.snake_list[0]
 
+    def collision(self, x, y):
+        if x >= DIS_WIDTH or x < 0 or y >= DIS_HEIGHT or y < 0:
+            return True
+
+        if [x, y] in self.snake_list[:-1]:
+            return True
+
+    def get_state(self):
+        snake_head = self.snake_head()
+        snake_head_x, snake_head_y = snake_head[0], snake_head[1]
+
+        state = [
+            int(self.direction == Direction.LEFT),
+            int(self.direction == Direction.RIGHT),
+            int(self.direction == Direction.UP),
+            int(self.direction == Direction.DOWN),
+            int(self.is_safe(snake_head_x + 1, snake_head_y)),
+            int(self.is_safe(snake_head_x - 1, snake_head_y)),
+            int(self.is_safe(snake_head_x, snake_head_y + 1)),
+            int(self.is_safe(snake_head_x, snake_head_y - 1)),
+            int(self.food_x < snake_head_x),
+            int(self.food_y < snake_head_y),
+            int(self.food_x > snake_head_x),
+            int(self.food_y > snake_head_y),
+        ]
+
+        return tuple(state)
+
+    def snake_head(self):
+        return [self.pos_x, self.pos_y]
+
+    def snake_length(self):
+        return self.score + 1
+
+    def is_safe(self, x, y):
+        if self.collision(x, y):
+            return False
+        return True
+
     def draw_score(self, score):
-        value = self.score_font.render(f"Score: {score}", True, GREEN)
-        self.display.blit(value, [0, 0])
+        value = self.score_font.render(f"Score: {score}", True, WHITE)
+        self.display.blit(value, [5, 5])
+
+    def draw_episode(self, epi):
+        value = self.score_font.render(f"Episode: {epi}", True, WHITE)
+        self.display.blit(value, [5, 30])
 
     def draw_snake(self, snake_list):
         for x in snake_list:
@@ -78,15 +118,36 @@ class Snake:
     def draw_food(self):
         pygame.draw.rect(self.display, RED, [self.food_x, self.food_y, BLOCK_SIZE, BLOCK_SIZE])
 
-    def game_loop(self):
+    def render_game(self, episode):
+        filename = f"pickle/qlearning/{episode}.pickle"
+        with open(filename, 'rb') as file:
+            q_table = pickle.load(file)
+
+        length = self.snake_length()
+        steps_without_food = 0
+
         while self.alive:
-            self.step()
+            state = self.get_state()
+
+            action = np.argmax(q_table[state])
+            action = Direction(action)
+            self.handle_action(action)
 
             self.move_snake()
-            self.check_collision()
-
-            self.handle_food()
+            self.eat_food()
             self.handle_tail()
+
+            if self.collision(self.pos_x, self.pos_y):
+                self.alive = False
+
+            if self.snake_length() != length:
+                steps_without_food = 0
+                length = self.snake_length()
+            else:
+                steps_without_food += 1
+
+            if steps_without_food == 1000:
+                break
 
             self.display.fill(BLUE)
             self.draw_food()
@@ -97,4 +158,5 @@ class Snake:
             self.clock.tick(TICK_SPEED)
 
         pygame.quit()
-        quit()
+
+        return self.snake_length()
