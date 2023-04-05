@@ -67,7 +67,7 @@ class ManualSnake:
         if snake_head in self.snake_list[:-1]:
             self.alive = False
 
-    def handle_food(self):
+    def eat_food(self):
         if self.pos_x == self.food_x and self.pos_y == self.food_y:
             self.food_x = round(random.randrange(0, DIS_WIDTH - MOVE_SPEED) / 10.0) * 10.0
             self.food_y = round(random.randrange(0, DIS_HEIGHT - MOVE_SPEED) / 10.0) * 10.0
@@ -133,7 +133,7 @@ class ManualSnake:
                 self.handle_input(event)
 
             self.move_snake()
-            self.handle_food()
+            self.eat_food()
             self.handle_tail()
 
             self.check_collision()
