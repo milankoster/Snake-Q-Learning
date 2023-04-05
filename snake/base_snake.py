@@ -1,6 +1,7 @@
 ﻿import random
 
 from common.constants import *
+from common.direction import Direction
 
 
 class BaseSnake:
@@ -18,6 +19,19 @@ class BaseSnake:
         # Game State
         self.alive = True
         self.score = 0
+
+    def move_snake(self):
+        if self.direction == Direction.LEFT:
+            self.pos_x += MOVE_LEFT
+        elif self.direction == Direction.RIGHT:
+            self.pos_x += MOVE_RIGHT
+        elif self.direction == Direction.UP:
+            self.pos_y += MOVE_UP
+        elif self.direction == Direction.DOWN:
+            self.pos_y += MOVE_DOWN
+
+        snake_head = [self.pos_x, self.pos_y]
+        self.snake_list.append(snake_head)
 
     def eat_food(self):
         if self.pos_x == self.food_x and self.pos_y == self.food_y:
