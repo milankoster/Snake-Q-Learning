@@ -1,22 +1,16 @@
 ﻿import pickle
 
 import numpy as np
-import pygame
 
 from common.constants import *
 from common.direction import Direction
 from snake.base_snake import BaseSnake
 
 
-class VisualSnake(BaseSnake):
+class SnakeTrainer(BaseSnake):
     def __init__(self):
         super().__init__()
-        pygame.init()
-        pygame.display.set_caption('Snake with Q Learning')
-
-        self.clock = pygame.time.Clock()
-        self.display = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
-        self.score_font = pygame.font.SysFont("arial", 35)
+        self.alive_duration = 0
 
     def handle_action(self, action):
         if action == Direction.LEFT and self.direction != Direction.RIGHT:
@@ -27,19 +21,6 @@ class VisualSnake(BaseSnake):
             self.direction = Direction.UP
         elif action == Direction.DOWN and self.direction != Direction.UP:
             self.direction = Direction.DOWN
-
-    def move_snake(self):
-        if self.direction == Direction.LEFT:
-            self.pos_x += MOVE_LEFT
-        elif self.direction == Direction.RIGHT:
-            self.pos_x += MOVE_RIGHT
-        elif self.direction == Direction.UP:
-            self.pos_y += MOVE_UP
-        elif self.direction == Direction.DOWN:
-            self.pos_y += MOVE_DOWN
-
-        snake_head = [self.pos_x, self.pos_y]
-        self.snake_list.append(snake_head)
 
     def get_state(self):
         snake_head_x, snake_head_y = self.pos_x, self.pos_y
@@ -66,22 +47,25 @@ class VisualSnake(BaseSnake):
             return False
         return True
 
-    def draw_score(self, score):
-        value = self.score_font.render(f"Score: {score}", True, WHITE)
-        self.display.blit(value, [5, 5])
+    def step(self, action):
+        reward = 0
 
-    def draw_episode(self, epi):
-        value = self.score_font.render(f"Episode: {epi}", True, WHITE)
-        self.display.blit(value, [5, 30])
+        self.handle_action(action)
 
-    def draw_snake(self, snake_list):
-        for x in snake_list:
-            pygame.draw.rect(self.display, BLACK, [x[0], x[1], BLOCK_SIZE, BLOCK_SIZE])
+        self.move_snake()
+        if self.eat_food():
+            reward = 1
+        self.handle_tail()
 
-    def draw_food(self):
-        pygame.draw.rect(self.display, RED, [self.food_x, self.food_y, BLOCK_SIZE, BLOCK_SIZE])
+        if self.collision(self.pos_x, self.pos_y):
+            self.alive = False
+            reward = -10
+        else:
+            self.alive_duration += 1
 
-    def render_game(self, episode):
+        return self.get_state(), reward, self.alive
+
+    def run_game(self, episode):
         filename = f"pickle/qlearning/{episode}.pickle"
         with open(filename, 'rb') as file:
             q_table = pickle.load(file)
@@ -94,14 +78,7 @@ class VisualSnake(BaseSnake):
 
             action = np.argmax(q_table[state])
             action = Direction(action)
-            self.handle_action(action)
-
-            self.move_snake()
-            self.eat_food()
-            self.handle_tail()
-
-            if self.collision(self.pos_x, self.pos_y):
-                self.alive = False
+            self.step(action)
 
             if self.snake_length() != length:
                 steps_without_food = 0
@@ -111,15 +88,5 @@ class VisualSnake(BaseSnake):
 
             if steps_without_food == 1000:
                 break
-
-            self.display.fill(BLUE)
-            self.draw_food()
-            self.draw_snake(self.snake_list)
-            self.draw_score(self.score)
-            pygame.display.update()
-
-            self.clock.tick(TICK_SPEED)
-
-        pygame.quit()
 
         return self.snake_length()
