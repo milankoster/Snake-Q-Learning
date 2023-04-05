@@ -1,9 +1,5 @@
 ﻿# Press the green button in the gutter to run the script.
-from common.direction import Direction
-from manual.manual_snake import ManualSnake
-from qlearning.snake_trainer import SnakeTrainer
-from qlearning.q_learner import QLearner
-from qlearning.auto_snake_visualiser import AutoSnakeVisualiser
+from q_learner import QLearner
 
 if __name__ == '__main__':
 
