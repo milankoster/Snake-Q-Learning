@@ -1,35 +1,22 @@
 ﻿import pickle
-import random
-import numpy as np
 
+import numpy as np
 import pygame
 
 from common.constants import *
 from common.direction import Direction
+from snake.base_snake import BaseSnake
 
 
-class VisualSnake:
+class VisualSnake(BaseSnake):
     def __init__(self):
+        super().__init__()
         pygame.init()
         pygame.display.set_caption('Snake with Q Learning')
 
         self.clock = pygame.time.Clock()
         self.display = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
         self.score_font = pygame.font.SysFont("arial", 35)
-
-        # Game State
-        self.alive = True
-        self.score = 0
-
-        # Snake
-        self.snake_list = []
-        self.pos_x = DIS_WIDTH / 2
-        self.pos_y = DIS_HEIGHT / 2
-        self.direction = None
-
-        # Create first food
-        self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
-        self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
 
     def handle_action(self, action):
         if action == Direction.LEFT and self.direction != Direction.RIGHT:
@@ -54,26 +41,8 @@ class VisualSnake:
         snake_head = [self.pos_x, self.pos_y]
         self.snake_list.append(snake_head)
 
-    def eat_food(self):
-        if self.pos_x == self.food_x and self.pos_y == self.food_y:
-            self.food_x = round(random.randrange(0, DIS_WIDTH - MOVE_SPEED) / 10.0) * 10.0
-            self.food_y = round(random.randrange(0, DIS_HEIGHT - MOVE_SPEED) / 10.0) * 10.0
-            self.score += 1
-
-    def handle_tail(self):
-        if len(self.snake_list) > self.snake_length():
-            del self.snake_list[0]
-
-    def collision(self, x, y):
-        if x >= DIS_WIDTH or x < 0 or y >= DIS_HEIGHT or y < 0:
-            return True
-
-        if [x, y] in self.snake_list[:-1]:
-            return True
-
     def get_state(self):
-        snake_head = self.snake_head()
-        snake_head_x, snake_head_y = snake_head[0], snake_head[1]
+        snake_head_x, snake_head_y = self.pos_x, self.pos_y
 
         state = [
             int(self.direction == Direction.LEFT),
@@ -91,12 +60,6 @@ class VisualSnake:
         ]
 
         return tuple(state)
-
-    def snake_head(self):
-        return [self.pos_x, self.pos_y]
-
-    def snake_length(self):
-        return self.score + 1
 
     def is_safe(self, x, y):
         if self.collision(x, y):

@@ -4,10 +4,13 @@ import pygame
 
 from common.direction import Direction
 from common.constants import *
+from snake.base_snake import BaseSnake
 
 
-class ManualSnake:
+class ManualSnake(BaseSnake):
     def __init__(self):
+        super().__init__()
+
         pygame.init()
         pygame.display.set_caption('Manual Snake')
 
@@ -15,21 +18,8 @@ class ManualSnake:
         self.display = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
         self.score_font = pygame.font.SysFont("arial", 25)
 
-        # Game State
         self.game_open = True
-        self.alive = True
-        self.score = 0
-
-        # Snake
-        self.snake_list = []
-        self.pos_x = DIS_WIDTH / 2
-        self.pos_y = DIS_HEIGHT / 2
         self.input_direction = None
-        self.direction = None
-
-        # Create first food
-        self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
-        self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
 
     def handle_input(self, event):
         if event.type == pygame.QUIT:
@@ -58,27 +48,6 @@ class ManualSnake:
 
         snake_head = [self.pos_x, self.pos_y]
         self.snake_list.append(snake_head)
-
-    def check_collision(self):
-        if self.pos_x >= DIS_WIDTH or self.pos_x < 0 or self.pos_y >= DIS_HEIGHT or self.pos_y < 0:
-            self.alive = False
-
-        snake_head = [self.pos_x, self.pos_y]
-        if snake_head in self.snake_list[:-1]:
-            self.alive = False
-
-    def eat_food(self):
-        if self.pos_x == self.food_x and self.pos_y == self.food_y:
-            self.food_x = round(random.randrange(0, DIS_WIDTH - MOVE_SPEED) / 10.0) * 10.0
-            self.food_y = round(random.randrange(0, DIS_HEIGHT - MOVE_SPEED) / 10.0) * 10.0
-            self.score += 1
-
-    def handle_tail(self):
-        if len(self.snake_list) > self.snake_length():
-            del self.snake_list[0]
-
-    def snake_length(self):
-        return self.score + 1
 
     def draw_score(self, score):
         value = self.score_font.render(f"Score: {score}", True, WHITE)
@@ -136,7 +105,8 @@ class ManualSnake:
             self.eat_food()
             self.handle_tail()
 
-            self.check_collision()
+            if self.collision(self.pos_x, self.pos_y):
+                self.alive = False
 
             self.display.fill(BLUE)
             self.draw_food()
