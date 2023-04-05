@@ -9,15 +9,15 @@ from common.constants import *
 class ManualSnake:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption('Snake with Q Learning')
+        pygame.display.set_caption('Manual Snake')
 
         self.clock = pygame.time.Clock()
         self.display = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
-        self.score_font = pygame.font.SysFont("arial", 35)
+        self.score_font = pygame.font.SysFont("arial", 25)
 
         # Game State
-        self.game_close = False
-        self.game_loss = False
+        self.game_open = True
+        self.alive = True
         self.score = 0
 
         # Snake
@@ -30,6 +30,19 @@ class ManualSnake:
         # Create first food
         self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
         self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
+
+    def handle_input(self, event):
+        if event.type == pygame.QUIT:
+            self.game_open = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT and self.direction != Direction.RIGHT:
+                self.input_direction = Direction.LEFT
+            elif event.key == pygame.K_RIGHT and self.direction != Direction.LEFT:
+                self.input_direction = Direction.RIGHT
+            elif event.key == pygame.K_UP and self.direction != Direction.DOWN:
+                self.input_direction = Direction.UP
+            elif event.key == pygame.K_DOWN and self.direction != Direction.UP:
+                self.input_direction = Direction.DOWN
 
     def move_snake(self):
         self.direction = self.input_direction
@@ -48,11 +61,11 @@ class ManualSnake:
 
     def check_collision(self):
         if self.pos_x >= DIS_WIDTH or self.pos_x < 0 or self.pos_y >= DIS_HEIGHT or self.pos_y < 0:
-            self.game_loss = True
+            self.alive = False
 
         snake_head = [self.pos_x, self.pos_y]
         if snake_head in self.snake_list[:-1]:
-            self.game_loss = True
+            self.alive = False
 
     def handle_food(self):
         if self.pos_x == self.food_x and self.pos_y == self.food_y:
@@ -61,13 +74,15 @@ class ManualSnake:
             self.score += 1
 
     def handle_tail(self):
-        snake_length = self.score + 1
-        if len(self.snake_list) > snake_length:
+        if len(self.snake_list) > self.snake_length():
             del self.snake_list[0]
 
+    def snake_length(self):
+        return self.score + 1
+
     def draw_score(self, score):
-        value = self.score_font.render(f"Score: {score}", True, GREEN)
-        self.display.blit(value, [0, 0])
+        value = self.score_font.render(f"Score: {score}", True, WHITE)
+        self.display.blit(value, [5, 5])
 
     def draw_snake(self, snake_list):
         for x in snake_list:
@@ -83,8 +98,8 @@ class ManualSnake:
         self.display.blit(message, [DIS_WIDTH / 3, DIS_HEIGHT / 3])
 
     def reset_game(self):
-        self.game_close = False
-        self.game_loss = False
+        self.game_open = True
+        self.alive = True
         self.score = 0
 
         self.snake_list = []
@@ -96,30 +111,11 @@ class ManualSnake:
         self.food_x = round(random.randrange(0, DIS_WIDTH - BLOCK_SIZE) / 10.0) * 10.0
         self.food_y = round(random.randrange(0, DIS_HEIGHT - BLOCK_SIZE) / 10.0) * 10.0
 
-    def is_out_of_bounds(self):
-        return self.pos_x >= DIS_WIDTH or self.pos_x < 0 or self.pos_y >= DIS_HEIGHT or self.pos_y < 0
-
-    def snake_length(self):
-        return self.score + 1
-
-    def handle_input(self, event):
-        if event.type == pygame.QUIT:
-            self.game_close = True
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and self.direction != Direction.RIGHT:
-                self.input_direction = Direction.LEFT
-            elif event.key == pygame.K_RIGHT and self.direction != Direction.LEFT:
-                self.input_direction = Direction.RIGHT
-            elif event.key == pygame.K_UP and self.direction != Direction.DOWN:
-                self.input_direction = Direction.UP
-            elif event.key == pygame.K_DOWN and self.direction != Direction.UP:
-                self.input_direction = Direction.DOWN
-
     def game_loop(self):
         self.reset_game()
 
-        while not self.game_close:
-            while self.game_loss:
+        while self.game_open:
+            while not self.alive:
                 self.display.fill(WHITE)
                 self.message("You Lost! Press Q-Quit or C-Play Again", BLACK)
                 self.draw_score(self.score)
@@ -128,8 +124,8 @@ class ManualSnake:
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q:
-                            self.game_close = True
-                            self.game_loss = False
+                            self.game_open = False
+                            self.alive = True
                         if event.key == pygame.K_c:
                             self.game_loop()
 
