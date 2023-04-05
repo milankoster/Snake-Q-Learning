@@ -1,6 +1,6 @@
-﻿import numpy as np
+﻿import pickle
 import random
-import pickle
+import numpy as np
 
 from common.constants import *
 from common.direction import Direction
