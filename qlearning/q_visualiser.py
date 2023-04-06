@@ -24,7 +24,7 @@ class AutoSnakeVisualiser(BaseVisualiser, BaseTrainer):
         pygame.display.update()
         self.clock.tick(TICK_SPEED)
 
-    def run_game(self, episode):
+    def run_game(self, episode, quit_game):
         q_table = load_q_table(episode)
 
         length = self.snake_length()
@@ -50,11 +50,12 @@ class AutoSnakeVisualiser(BaseVisualiser, BaseTrainer):
             else:
                 steps_without_food += 1
 
-            if steps_without_food == 1000:
+            if steps_without_food == 200:
                 break
 
             self.draw_game(episode)
 
-        pygame.quit()
+        if quit_game:
+            pygame.quit()
 
         return self.snake_length()

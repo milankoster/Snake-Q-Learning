@@ -39,7 +39,18 @@ class QLearner:
             self.survived = []
 
     def save_model(self, episode):
-        if episode % 500 == 0:
+        should_save = False
+
+        if episode < 100 and episode % 20 == 0:
+            should_save = True
+        if 100 <= episode < 500 and episode % 50 == 0:
+            should_save = True
+        elif 500 <= episode < 1000 and episode % 100 == 0:
+            should_save = True
+        elif episode >= 1000 and episode % 500 == 0:
+            should_save = True
+
+        if should_save:
             with open(f'pickle/qlearning/{episode}.pickle', 'wb') as file:
                 pickle.dump(self.q_table, file)
 
