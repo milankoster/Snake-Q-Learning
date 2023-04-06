@@ -4,7 +4,7 @@ from common.direction import Direction
 from snake.base_trainer import BaseTrainer, load_q_table
 
 
-class SnakeTrainer(BaseTrainer):
+class QTrainer(BaseTrainer):
     def __init__(self):
         super().__init__()
         self.alive_duration = 0
