@@ -1,5 +1,6 @@
 ﻿import numpy as np
 
+from common.constants import MOVE_SPEED
 from common.direction import Direction
 from snake.base_trainer import BaseTrainer, load_q_table
 
@@ -26,6 +27,26 @@ class QEnvironment(BaseTrainer):
             self.alive_duration += 1
 
         return self.get_state(), reward, self.alive
+
+    def get_state(self):
+        snake_head_x, snake_head_y = self.pos_x, self.pos_y
+
+        state = [
+            int(self.direction == Direction.LEFT),
+            int(self.direction == Direction.RIGHT),
+            int(self.direction == Direction.UP),
+            int(self.direction == Direction.DOWN),
+            int(self.is_safe(snake_head_x + MOVE_SPEED, snake_head_y)),
+            int(self.is_safe(snake_head_x - MOVE_SPEED, snake_head_y)),
+            int(self.is_safe(snake_head_x, snake_head_y + MOVE_SPEED)),
+            int(self.is_safe(snake_head_x, snake_head_y - MOVE_SPEED)),
+            int(self.food_x > snake_head_x),
+            int(self.food_x < snake_head_x),
+            int(self.food_y < snake_head_y),
+            int(self.food_y > snake_head_y),
+        ]
+
+        return tuple(state)
 
     def run_game(self, episode):
         q_table = load_q_table(episode)
