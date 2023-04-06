@@ -1,5 +1,6 @@
 ﻿import pickle
 
+from common.constants import MOVE_SPEED
 from common.direction import Direction
 from snake.base_snake import BaseSnake
 
@@ -33,13 +34,13 @@ class BaseTrainer(BaseSnake):
             int(self.direction == Direction.RIGHT),
             int(self.direction == Direction.UP),
             int(self.direction == Direction.DOWN),
-            int(self.is_safe(snake_head_x + 1, snake_head_y)),
-            int(self.is_safe(snake_head_x - 1, snake_head_y)),
-            int(self.is_safe(snake_head_x, snake_head_y + 1)),
-            int(self.is_safe(snake_head_x, snake_head_y - 1)),
+            int(self.is_safe(snake_head_x + MOVE_SPEED, snake_head_y)),
+            int(self.is_safe(snake_head_x - MOVE_SPEED, snake_head_y)),
+            int(self.is_safe(snake_head_x, snake_head_y + MOVE_SPEED)),
+            int(self.is_safe(snake_head_x, snake_head_y - MOVE_SPEED)),
+            int(self.food_x > snake_head_x),
             int(self.food_x < snake_head_x),
             int(self.food_y < snake_head_y),
-            int(self.food_x > snake_head_x),
             int(self.food_y > snake_head_y),
         ]
 

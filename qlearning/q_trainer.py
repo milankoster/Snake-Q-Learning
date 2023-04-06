@@ -1,6 +1,4 @@
-﻿import pickle
-
-import numpy as np
+﻿import numpy as np
 
 from common.direction import Direction
 from snake.base_trainer import BaseTrainer, load_q_table
