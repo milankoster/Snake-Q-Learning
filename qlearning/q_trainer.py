@@ -6,7 +6,7 @@ from common.direction import Direction
 from qlearning.q_environment import QEnvironment
 
 
-class QLearner:
+class QTrainer:
     def __init__(self):
         self.discount_rate = 0.95
         self.learning_rate = 0.01

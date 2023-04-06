@@ -1,6 +1,6 @@
 ﻿# Press the green button in the gutter to run the script.
 from manual.manual_snake import ManualSnake
-from qlearning.q_learner import QLearner
+from qlearning.q_trainer import QTrainer
 from qlearning.q_visualiser import AutoSnakeVisualiser
 from os import listdir
 
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     # snake.game_loop()
 
     # Q learning (no visualisation)
-    q_learner = QLearner()
+    q_learner = QTrainer()
     q_learner.train()
 
     # # Q Learning Visualisation
