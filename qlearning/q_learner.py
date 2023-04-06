@@ -3,7 +3,7 @@ import random
 import pickle
 
 from common.direction import Direction
-from qlearning.q_trainer import QTrainer
+from qlearning.q_environment import QEnvironment
 
 
 class QLearner:
@@ -15,7 +15,7 @@ class QLearner:
         self.min_eps = 0.001
         self.num_episodes = 10000
 
-        self.env = QTrainer()
+        self.env = QEnvironment()
         self.q_table = np.zeros((2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4))
         self.score = []
         self.survived = []
@@ -56,7 +56,7 @@ class QLearner:
 
     def train(self):
         for episode in range(1, self.num_episodes + 1):
-            self.env = QTrainer()
+            self.env = QEnvironment()
 
             self.print_update(episode)
             self.save_model(episode)
