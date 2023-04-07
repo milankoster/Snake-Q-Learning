@@ -1,7 +1,8 @@
 ﻿# Press the green button in the gutter to run the script.
+from deepqlearning.deep_q_trainer import DeepQTrainer
 from manual.manual_snake import ManualSnake
 from qlearning.q_trainer import QTrainer
-from qlearning.q_visualiser import AutoSnakeVisualiser
+from qlearning.q_visualiser import QVisualiser
 from os import listdir
 
 if __name__ == '__main__':
@@ -9,23 +10,26 @@ if __name__ == '__main__':
     # snake = ManualSnake()
     # snake.game_loop()
 
-    # Q learning (no visualisation)
-    q_learner = QTrainer()
-    q_learner.train()
+    # # Q learning (no visualisation)
+    # q_trainer = QTrainer()
+    # q_trainer.train()
 
     # # Q Learning Visualisation
-    # visual_snake = AutoSnakeVisualiser()
-    # visual_snake.run_game(500, True)
+    # q_visualiser = QVisualiser()
+    # q_visualiser.visualise(10000, True)
 
-    # # Q Learning Visualisation All Runs
-    # files = listdir("pickle/qlearning")
-    # 
-    # episodes = []
-    # for file in files:
-    #     episodes.append(int(file.split(".")[0]))
-    # episodes.sort()
-    # 
-    # visual_snake = AutoSnakeVisualiser()
-    # for episode in episodes:
-    #     visual_snake = AutoSnakeVisualiser()
-    #     visual_snake.run_game(episode, False)
+    # Q Learning Visualisation All Runs
+    files = listdir("pickle/qlearning")
+
+    episodes = []
+    for file in files:
+        episodes.append(int(file.split(".")[0]))
+    episodes.sort()
+
+    q_visualiser = QVisualiser()
+    for episode in episodes:
+        q_visualiser.visualise(episode, False)
+
+    # # Deep Q Learning
+    # deep_q_trainer = DeepQTrainer()
+    # deep_q_trainer.train()

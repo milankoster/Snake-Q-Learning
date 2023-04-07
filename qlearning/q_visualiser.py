@@ -1,15 +1,14 @@
-﻿import pickle
-
-import numpy as np
+﻿import numpy as np
 import pygame
 
 from common.constants import *
 from common.direction import Direction
-from snake.base_trainer import BaseTrainer, load_q_table
+from qlearning.q_environment import QEnvironment
+from snake.base_trainer import load_q_table
 from snake.base_visualiser import BaseVisualiser
 
 
-class AutoSnakeVisualiser(BaseVisualiser, BaseTrainer):
+class QVisualiser(BaseVisualiser, QEnvironment):
     def __init__(self):
         super().__init__()
         pygame.display.set_caption('Snake with Q Learning')
@@ -24,7 +23,7 @@ class AutoSnakeVisualiser(BaseVisualiser, BaseTrainer):
         pygame.display.update()
         self.clock.tick(TICK_SPEED)
 
-    def run_game(self, episode, quit_game):
+    def visualise(self, episode, quit_game):
         q_table = load_q_table(episode)
 
         length = self.snake_length()
