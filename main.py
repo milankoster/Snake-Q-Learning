@@ -18,18 +18,18 @@ if __name__ == '__main__':
     # q_visualiser = QVisualiser()
     # q_visualiser.visualise(10000, True)
 
-    # Q Learning Visualisation All Runs
-    files = listdir("pickle/qlearning")
+    # # Q Learning Visualisation All Runs
+    # files = listdir("pickle/qlearning")
+    #
+    # episodes = []
+    # for file in files:
+    #     episodes.append(int(file.split(".")[0]))
+    # episodes.sort()
+    #
+    # for episode in episodes:
+    #     q_visualiser = QVisualiser()
+    #     q_visualiser.visualise(episode, False)
 
-    episodes = []
-    for file in files:
-        episodes.append(int(file.split(".")[0]))
-    episodes.sort()
-
-    q_visualiser = QVisualiser()
-    for episode in episodes:
-        q_visualiser.visualise(episode, False)
-
-    # # Deep Q Learning
-    # deep_q_trainer = DeepQTrainer()
-    # deep_q_trainer.train()
+    # Deep Q Learning
+    deep_q_trainer = DeepQTrainer()
+    deep_q_trainer.train()
