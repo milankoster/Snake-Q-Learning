@@ -7,6 +7,7 @@ class DeepQEnvironment(BaseTrainer):
 
     def step(self, action):
         reward = 0
+        done = False
 
         self.handle_action(action)
 
@@ -16,10 +17,9 @@ class DeepQEnvironment(BaseTrainer):
         self.handle_tail()
 
         if self.collision(self.pos_x, self.pos_y):
-            self.alive = False
             reward = -10
-
-        done = not self.alive
+            self.alive = False
+            done = True
 
         return self.get_state(), reward, done
 

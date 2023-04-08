@@ -6,6 +6,7 @@ from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
 
+from common.direction import Direction
 from deepqlearning.deep_q_environment import DeepQEnvironment
 
 
@@ -17,6 +18,7 @@ class DeepQTrainer:
         self.epsilon_decay = 0.995
         self.learning_rate = 0.005
         self.tau = .125
+        self.batch_size = 512
 
         self.trials = 1000
         self.trial_len = 500
@@ -50,11 +52,10 @@ class DeepQTrainer:
         self.memory.append([state, action, reward, new_state, done])
 
     def replay(self):
-        batch_size = 32
-        if len(self.memory) < batch_size:
+        if len(self.memory) < self.batch_size:
             return
 
-        samples = random.sample(self.memory, batch_size)
+        samples = random.sample(self.memory, self.batch_size)
         for sample in samples:
             state, action, reward, new_state, done = sample
             target = self.target_model.predict(state, verbose=0)
@@ -80,12 +81,14 @@ class DeepQTrainer:
         for trial in range(self.trials):
             self.env = DeepQEnvironment()
 
-            current_state = np.reshape(self.env.get_state(), (1, 12)) 
+            current_state = np.reshape(self.env.get_state(), (1, 12))
+            score = 0
 
             for step in range(self.trial_len):
                 action = self.act(current_state)
-                new_state, reward, done = self.env.step(action)
-                new_state = np.reshape(new_state, (1, 12)) 
+                new_state, reward, done = self.env.step(Direction(action))
+                new_state = np.reshape(new_state, (1, 12))
+                score += reward
 
                 self.remember(current_state, action, reward, new_state, done)
 
@@ -94,16 +97,9 @@ class DeepQTrainer:
 
                 current_state = new_state
                 if done:
+                    print(f'episode: {trial + 1}/{self.trials}, score: {score + 10}')
                     break
 
-                if step % 10 == 0:
-                    print("Completed step {}".format(step))
-
-            if trial >= 199:
-                print("Failed to complete in trial {}".format(trial))
-                if trial % 10 == 0:
-                    self.save_model("trial-{}.model".format(trial))
-            else:
-                print("Completed in {} trials".format(trial))
-                self.save_model("success.model")
-                break
+            print("Failed to complete in trial {}".format(trial))
+            if trial % 10 == 0:
+                self.save_model("models/trial-{}.model".format(trial))
