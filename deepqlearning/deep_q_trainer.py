@@ -69,8 +69,20 @@ class DeepQTrainer:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def save_model(self, fn):
-        self.model.save(fn)
+    def save_model(self, episode):
+        should_save = False
+
+        if episode < 10:
+            should_save = True
+        if 10 <= episode < 100 and episode % 10 == 0:
+            should_save = True
+        elif 100 <= episode < 500 and episode % 50 == 0:
+            should_save = True
+        elif episode >= 500 and episode % 100 == 0:
+            should_save = True
+
+        if should_save:
+            self.model.save("models/episode-{}.model".format(episode))
 
     def train(self):
         for episode in range(self.episodes):
@@ -94,6 +106,7 @@ class DeepQTrainer:
 
                 if done:
                     print(f'episode: {episode + 1}/{self.episodes}, score: {score}')
+                    self.save_model(episode)
                     break
 
         return
