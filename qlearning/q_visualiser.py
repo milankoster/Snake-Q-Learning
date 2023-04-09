@@ -4,7 +4,7 @@ import pygame
 from common.constants import *
 from common.direction import Direction
 from qlearning.q_environment import QEnvironment
-from snake.base_trainer import load_q_table
+from qlearning.q_loader import load_q_table
 from snake.base_visualiser import BaseVisualiser
 
 

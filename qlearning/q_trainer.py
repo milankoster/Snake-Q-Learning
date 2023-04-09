@@ -51,7 +51,7 @@ class QTrainer:
             should_save = True
 
         if should_save:
-            with open(f'pickle/qlearning/{episode}.pickle', 'wb') as file:
+            with open(f'models/qlearning/{episode}.pickle', 'wb') as file:
                 pickle.dump(self.q_table, file)
 
     def train(self):

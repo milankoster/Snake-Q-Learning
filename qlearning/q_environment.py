@@ -2,7 +2,8 @@
 
 from common.constants import MOVE_SPEED
 from common.direction import Direction
-from snake.base_trainer import BaseTrainer, load_q_table
+from qlearning.q_loader import load_q_table
+from snake.base_trainer import BaseTrainer
 
 
 class QEnvironment(BaseTrainer):
