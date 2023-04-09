@@ -80,9 +80,6 @@ class DeepQTrainer:
             current_state = np.reshape(current_state, (1, self.env.action_space))
             score = 0
 
-            steps_without_food = 0
-            snake_length = self.env.snake_length()
-
             for i in range(self.episode_length):
                 action = self.act(current_state)
                 new_state, reward, done = self.env.step(Direction(action))
@@ -95,13 +92,8 @@ class DeepQTrainer:
 
                 self.replay()
 
-                steps_without_food += 1
-                if snake_length != self.env.snake_length():
-                    snake_length = self.env.snake_length()
-                    steps_without_food = 0
-
-                if done or steps_without_food == 1000:
-                    print(f'episode: {episode + 1}/{self.episodes}, score: {score + 10}')
+                if done:
+                    print(f'episode: {episode + 1}/{self.episodes}, score: {score}')
                     break
 
         return
