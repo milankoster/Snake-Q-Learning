@@ -1,5 +1,6 @@
 ﻿# Press the green button in the gutter to run the script.
 from deepqlearning.deep_q_trainer import DeepQTrainer
+from deepqlearning.deep_q_visualiser import DeepQVisualiser
 from manual.manual_snake import ManualSnake
 from qlearning.q_trainer import QTrainer
 from qlearning.q_visualiser import QVisualiser
@@ -30,6 +31,10 @@ if __name__ == '__main__':
     #     q_visualiser = QVisualiser()
     #     q_visualiser.visualise(episode, False)
 
-    # Deep Q Learning
-    deep_q_trainer = DeepQTrainer()
-    deep_q_trainer.train()
+    # # Deep Q Learning
+    # deep_q_trainer = DeepQTrainer()
+    # deep_q_trainer.train()
+
+    # # Deep Q Learning Visualisation
+    deep_q_visualiser = DeepQVisualiser()
+    deep_q_visualiser.visualise(200, True)
