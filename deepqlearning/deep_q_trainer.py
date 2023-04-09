@@ -19,7 +19,7 @@ class DeepQTrainer:
         self.learning_rate = 0.00025
         self.batch_size = 512
 
-        self.episodes = 1000
+        self.episodes = 10000
         self.episode_length = 10000
 
         self.env = DeepQEnvironment()
@@ -82,20 +82,20 @@ class DeepQTrainer:
             should_save = True
 
         if should_save:
-            self.model.save("models/episode-{}.model".format(episode))
+            self.model.save("models/deepq/episode-{}.model".format(episode))
 
     def train(self):
         for episode in range(self.episodes):
             self.env = DeepQEnvironment()
 
             current_state = self.env.get_state()
-            current_state = np.reshape(current_state, (1, self.env.action_space))
+            current_state = np.reshape(current_state, (1, self.env.state_space))
             score = 0
 
             for i in range(self.episode_length):
                 action = self.act(current_state)
                 new_state, reward, done = self.env.step(Direction(action))
-                new_state = np.reshape(new_state, (1, self.env.action_space))
+                new_state = np.reshape(new_state, (1, self.env.state_space))
                 score += reward
 
                 self.remember(current_state, action, reward, new_state, done)
