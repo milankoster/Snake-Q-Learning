@@ -20,7 +20,7 @@ class DeepQTrainer:
         self.batch_size = 512
 
         self.episodes = 1000
-        self.trial_len = 500
+        self.episode_length = 10000
 
         self.env = DeepQEnvironment()
         self.memory = deque(maxlen=2000)
@@ -77,13 +77,16 @@ class DeepQTrainer:
             self.env = DeepQEnvironment()
 
             current_state = self.env.get_state()
-            current_state = np.reshape(current_state, (1, 12))
+            current_state = np.reshape(current_state, (1, self.env.action_space))
             score = 0
 
-            for i in range(10000):
+            steps_without_food = 0
+            snake_length = self.env.snake_length()
+
+            for i in range(self.episode_length):
                 action = self.act(current_state)
                 new_state, reward, done = self.env.step(Direction(action))
-                new_state = np.reshape(new_state, (1, 12))
+                new_state = np.reshape(new_state, (1, self.env.action_space))
                 score += reward
 
                 self.remember(current_state, action, reward, new_state, done)
@@ -91,8 +94,14 @@ class DeepQTrainer:
                 current_state = new_state
 
                 self.replay()
-                if done:
-                    print(f'episode: {episode + 1}/{self.episodes}, score: {score}')
+
+                steps_without_food += 1
+                if snake_length != self.env.snake_length():
+                    snake_length = self.env.snake_length()
+                    steps_without_food = 0
+
+                if done or steps_without_food == 1000:
+                    print(f'episode: {episode + 1}/{self.episodes}, score: {score + 10}')
                     break
 
         return
