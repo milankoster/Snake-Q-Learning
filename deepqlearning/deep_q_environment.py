@@ -5,6 +5,11 @@ from snake.base_trainer import BaseTrainer
 
 class DeepQEnvironment(BaseTrainer):
 
+    def __init__(self):
+        super().__init__()
+        self.state_space = 12
+        self.action_space = 4
+
     def step(self, action):
         reward = 0
         done = False

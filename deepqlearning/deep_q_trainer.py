@@ -22,10 +22,6 @@ class DeepQTrainer:
         self.episodes = 1000
         self.trial_len = 500
 
-        # TODO Move these to env
-        self.state_space = 12
-        self.action_space = 4
-
         self.env = DeepQEnvironment()
         self.memory = deque(maxlen=2000)
         self.model = self.create_model()
@@ -33,16 +29,16 @@ class DeepQTrainer:
 
     def create_model(self):
         model = Sequential()
-        model.add(Dense(128, input_dim=self.state_space, activation="relu"))
+        model.add(Dense(128, input_dim=self.env.state_space, activation="relu"))
         model.add(Dense(128, activation="relu"))
         model.add(Dense(128, activation="relu"))
-        model.add(Dense(self.action_space, activation='softmax'))
+        model.add(Dense(self.env.action_space, activation='softmax'))
         model.compile(loss="mse", optimizer=Adam(learning_rate=self.learning_rate))
         return model
 
     def act(self, state):
         if np.random.rand() <= self.epsilon:
-            return random.randrange(self.action_space)
+            return random.randrange(self.env.action_space)
         act_values = self.model.predict(state, verbose=0)
         return np.argmax(act_values[0])
 
