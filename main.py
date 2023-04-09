@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # q_visualiser.visualise(10000, True)
 
     # # Q Learning Visualisation All Runs
-    # files = listdir("pickle/qlearning")
+    # files = listdir("models/qlearning")
     #
     # episodes = []
     # for file in files:
