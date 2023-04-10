@@ -69,7 +69,7 @@ class DeepQTrainer:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def save_model(self, episode):
+    def save_model(self, path, episode):
         should_save = False
 
         if episode < 10:
@@ -82,21 +82,21 @@ class DeepQTrainer:
             should_save = True
 
         if should_save:
-            self.model.save("models/deepq/episode-{}.model".format(episode))
+            self.model.save(path + "episode-{}.model".format(episode))
 
-    def train(self):
+    def train(self, path):
         for episode in range(self.episodes):
             self.env = DeepQEnvironment()
 
             current_state = self.env.get_state()
             current_state = np.reshape(current_state, (1, self.env.state_space))
-            score = 0
+            epi_reward = 0
 
             for i in range(self.episode_length):
                 action = self.act(current_state)
                 new_state, reward, done = self.env.step(Direction(action))
                 new_state = np.reshape(new_state, (1, self.env.state_space))
-                score += reward
+                epi_reward += reward
 
                 self.remember(current_state, action, reward, new_state, done)
 
@@ -105,8 +105,9 @@ class DeepQTrainer:
                 self.replay()
 
                 if done:
-                    print(f'episode: {episode + 1}/{self.episodes}, score: {score}')
-                    self.save_model(episode)
+                    print(f'episode: {episode + 1}/{self.episodes}, score: {self.env.score}, '
+                          f'reward: {epi_reward}, epsilon: {self.epsilon}')
+                    self.save_model(path, episode)
                     break
 
         return
