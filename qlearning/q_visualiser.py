@@ -58,3 +58,8 @@ class QVisualiser(BaseVisualiser, QEnvironment):
             pygame.quit()
 
         return self.snake_length()
+
+
+if __name__ == '__main__':
+    q_visualiser = QVisualiser()
+    q_visualiser.visualise(10000, True)

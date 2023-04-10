@@ -111,3 +111,9 @@ class DeepQTrainer:
                     break
 
         return
+
+
+if __name__ == '__main__':
+    path = "../models/deepq2/"
+    deep_q_trainer = DeepQTrainer()
+    deep_q_trainer.train(path)

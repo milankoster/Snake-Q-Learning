@@ -92,3 +92,8 @@ class ManualSnake(BaseVisualiser):
 
         pygame.quit()
         quit()
+
+
+if __name__ == '__main__':
+    snake = ManualSnake()
+    snake.game_loop()

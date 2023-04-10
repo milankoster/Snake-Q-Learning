@@ -90,3 +90,8 @@ class QTrainer:
             # keep track of important metrics
             self.score.append(self.env.snake_length() - 1)
             self.survived.append(self.env.alive_duration)
+
+
+if __name__ == '__main__':
+    q_trainer = QTrainer()
+    q_trainer.train()

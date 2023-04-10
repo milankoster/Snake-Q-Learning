@@ -59,3 +59,9 @@ class DeepQVisualiser(BaseVisualiser, DeepQEnvironment):
             pygame.quit()
 
         return self.snake_length()
+
+
+if __name__ == '__main__':
+    path = "../models/deepq2/"
+    deep_q_visualiser = DeepQVisualiser()
+    deep_q_visualiser.visualise(path, 50, True)
