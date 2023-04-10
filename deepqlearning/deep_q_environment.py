@@ -10,22 +10,30 @@ class DeepQEnvironment(BaseTrainer):
         self.state_space = 12
         self.action_space = 4
 
+    def measure_distance(self):
+        return abs(self.pos_x - self.food_x) + abs(self.pos_y - self.food_y)
+
     def step(self, action):
-        reward = 0
+        prev_distance = self.measure_distance()
+        reward = -1
         done = False
-        snake_length = self.snake_length()
 
         self.handle_action(action)
 
         self.move_snake()
-        if self.eat_food():
+
+        new_distance = self.measure_distance()
+        if new_distance < prev_distance:
             reward = 1
+
+        if self.eat_food():
+            reward = 10
         self.handle_tail()
 
         if self.collision(self.pos_x, self.pos_y):
             self.alive = False
             done = True
-            reward = -10
+            reward = -100
 
         return self.get_state(), reward, done
 
