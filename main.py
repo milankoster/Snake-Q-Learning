@@ -32,9 +32,9 @@ if __name__ == '__main__':
     #     q_visualiser.visualise(episode, False)
 
     # # Deep Q Learning
-    # deep_q_trainer = DeepQTrainer()
-    # deep_q_trainer.train()
+    deep_q_trainer = DeepQTrainer()
+    deep_q_trainer.train()
 
     # # Deep Q Learning Visualisation
-    deep_q_visualiser = DeepQVisualiser()
-    deep_q_visualiser.visualise(200, True)
+    # deep_q_visualiser = DeepQVisualiser()
+    # deep_q_visualiser.visualise(400, True)

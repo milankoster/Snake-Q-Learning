@@ -82,7 +82,7 @@ class DeepQTrainer:
             should_save = True
 
         if should_save:
-            self.model.save("models/deepq/episode-{}.model".format(episode))
+            self.model.save("models/deepq4/episode-{}.model".format(episode))
 
     def train(self):
         for episode in range(self.episodes):

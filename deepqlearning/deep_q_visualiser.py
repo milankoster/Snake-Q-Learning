@@ -14,7 +14,7 @@ class DeepQVisualiser(BaseVisualiser, DeepQEnvironment):
     def __init__(self):
         super().__init__()
         pygame.display.set_caption('Snake with Q Learning')
-        self.model = tf.keras.models.load_model("models/deepq/episode-250.model")
+        self.model = tf.keras.models.load_model("models/deepq4/episode-400.model")
 
     def draw_game(self, episode):
         self.display.fill(BLUE)
