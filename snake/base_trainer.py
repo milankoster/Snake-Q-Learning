@@ -7,6 +7,8 @@ class BaseTrainer(BaseSnake):
         super().__init__()
 
     def handle_action(self, action):
+        if action != Direction.LEFT and action != Direction.RIGHT and action != Direction.UP and action != Direction.DOWN:
+            raise Exception('Invalid action')
         if action == Direction.LEFT and self.direction != Direction.RIGHT:
             self.direction = Direction.LEFT
         elif action == Direction.RIGHT and self.direction != Direction.LEFT:
