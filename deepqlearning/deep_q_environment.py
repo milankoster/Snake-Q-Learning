@@ -10,13 +10,10 @@ class DeepQEnvironment(BaseTrainer):
         self.state_space = 12
         self.action_space = 4
 
-        self.steps_without_food = 0
-
     def step(self, action):
         reward = 0
         done = False
         snake_length = self.snake_length()
-        self.steps_without_food += 1
 
         self.handle_action(action)
 
@@ -25,10 +22,7 @@ class DeepQEnvironment(BaseTrainer):
             reward = 1
         self.handle_tail()
 
-        if snake_length != self.snake_length():
-            self.steps_without_food = 0
-
-        if self.collision(self.pos_x, self.pos_y) or self.steps_without_food == 1000:
+        if self.collision(self.pos_x, self.pos_y):
             self.alive = False
             done = True
             reward = -10
