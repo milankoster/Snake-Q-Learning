@@ -1,4 +1,5 @@
 ﻿import numpy as np
+import pandas as pd
 import random
 import pickle
 
@@ -17,8 +18,8 @@ class QTrainer:
 
         self.env = QEnvironment()
         self.q_table = np.zeros((2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4))
-        self.score = []
-        self.survived = []
+        self.scores = []
+        self.survived_duration = []
 
     # epsilon-greedy action choice
     def get_action(self, state):
@@ -32,11 +33,9 @@ class QTrainer:
     def print_update(self, episode):
         if episode % 100 == 0:
             print(
-                f"Episodes: {episode}. Average score: {np.mean(self.score[-100:])}, "
-                f"Max Score: {np.max(self.score[-100:])}. Survival duration: {np.mean(self.survived[-100:])}."
+                f"Episodes: {episode}. Average score: {np.mean(self.scores[-100:])}, "
+                f"Max Score: {np.max(self.scores[-100:])}. Survival duration: {np.mean(self.survived_duration[-100:])}."
                 f" eps: {self.eps}")
-            self.score = []
-            self.survived = []
 
     def save_model(self, episode):
         should_save = False
@@ -51,7 +50,7 @@ class QTrainer:
             should_save = True
 
         if should_save:
-            with open(f'models/qlearning/{episode}.pickle', 'wb') as file:
+            with open(f'../models/qlearning/{episode}.pickle', 'wb') as file:
                 pickle.dump(self.q_table, file)
 
     def train(self):
@@ -61,17 +60,15 @@ class QTrainer:
             self.print_update(episode)
             self.save_model(episode)
 
-            steps_without_food = 0
-            snake_length = self.env.snake_length()
             current_state = self.env.get_state()
             self.eps = max(self.eps * self.eps_discount, self.min_eps)
 
-            alive = True
-            while alive:
+            done = False
+            while not done:
                 # choose action and take it
                 action = self.get_action(current_state)
 
-                new_state, reward, alive = self.env.step(Direction(action))
+                new_state, reward, done = self.env.step(Direction(action))
 
                 # Bellman Equation Update
                 self.q_table[current_state][action] = (1 - self.learning_rate) \
@@ -79,19 +76,22 @@ class QTrainer:
                                                       * (reward + self.discount_rate * max(self.q_table[new_state]))
                 current_state = new_state
 
-                steps_without_food += 1
-                if snake_length != self.env.snake_length():
-                    snake_length = self.env.snake_length()
-                    steps_without_food = 0
-
-                if steps_without_food == 1000:
-                    break
-
             # keep track of important metrics
-            self.score.append(self.env.snake_length() - 1)
-            self.survived.append(self.env.alive_duration)
+            self.scores.append(self.env.snake_length() - 1)
+            self.survived_duration.append(self.env.alive_duration)
+
+    def save_results(self, name):
+        df = pd.DataFrame()
+        df['Scores'] = self.scores
+        df['Alive_Duration'] = self.env.alive_duration
+        df['Epsilon_Discount'] = self.eps_discount
+        df['Learning_Rate'] = self.learning_rate
+        df['Discount_Rate'] = self.discount_rate
+
+        df.to_csv('results/' + name)
 
 
 if __name__ == '__main__':
     q_trainer = QTrainer()
     q_trainer.train()
+    q_trainer.save_results('low_dr.csv')

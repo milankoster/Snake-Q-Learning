@@ -10,9 +10,14 @@ class QEnvironment(BaseTrainer):
     def __init__(self):
         super().__init__()
         self.alive_duration = 0
+        self.steps_without_food = 0
 
     def step(self, action):
+        done = False
         reward = 0
+        snake_length = self.snake_length()
+
+        self.steps_without_food += 1
 
         self.handle_action(action)
 
@@ -27,7 +32,13 @@ class QEnvironment(BaseTrainer):
         else:
             self.alive_duration += 1
 
-        return self.get_state(), reward, self.alive
+        if snake_length != self.snake_length():
+            self.steps_without_food = 0
+
+        if not self.alive or self.steps_without_food == 1000:
+            done = True
+
+        return self.get_state(), reward, done
 
     def get_state(self):
         snake_head_x, snake_head_y = self.pos_x, self.pos_y
