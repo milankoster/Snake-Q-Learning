@@ -94,4 +94,4 @@ class QTrainer:
 if __name__ == '__main__':
     q_trainer = QTrainer()
     q_trainer.train()
-    q_trainer.save_results('low_dr.csv')
+    q_trainer.save_results('base.csv')
