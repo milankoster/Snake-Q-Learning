@@ -8,6 +8,11 @@ In the Q Learning folder, we apply classic Q learning with a Q table. The Q tabl
 
 During Q Learning, I attempted several values to observe their affects on the q tables. The dataframes can be found in the `results` folder.
 
+The base values are: 
+- Learning rate: 0.01
+- Epsilon Discount: 0.9992 
+- Discount Rate: 0.95
+
 --- 
 
 ## Files
