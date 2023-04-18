@@ -127,7 +127,7 @@ class DeepQTrainer:
 
 
 if __name__ == '__main__':
-    name = "deepq_base"
+    name = "deepq_continuous"
 
     deep_q_trainer = DeepQTrainer()
     deep_q_trainer.train(name)

@@ -1,4 +1,6 @@
-﻿from common.constants import MOVE_SPEED
+﻿import math
+
+from common.constants import MOVE_SPEED
 from common.direction import Direction
 from snake.base_trainer import BaseTrainer
 
@@ -40,6 +42,10 @@ class DeepQEnvironment(BaseTrainer):
     def get_state(self):
         snake_head_x, snake_head_y = self.pos_x, self.pos_y
 
+        # Euclidean distance between the snake's head and the food
+        food_distance = math.sqrt((self.pos_x - self.food_x) ** 2 + (self.pos_y - self.food_y) ** 2)
+        food_angle = math.atan2(self.food_y - self.pos_y, self.food_x - self.pos_x)
+
         state = [
             int(self.direction == Direction.LEFT),
             int(self.direction == Direction.RIGHT),
@@ -49,10 +55,8 @@ class DeepQEnvironment(BaseTrainer):
             int(self.is_safe(snake_head_x - MOVE_SPEED, snake_head_y)),
             int(self.is_safe(snake_head_x, snake_head_y + MOVE_SPEED)),
             int(self.is_safe(snake_head_x, snake_head_y - MOVE_SPEED)),
-            int(self.food_x > snake_head_x),
-            int(self.food_x < snake_head_x),
-            int(self.food_y < snake_head_y),
-            int(self.food_y > snake_head_y),
+            food_distance,
+            food_angle,
         ]
 
         return state
