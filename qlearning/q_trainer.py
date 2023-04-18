@@ -83,10 +83,7 @@ class QTrainer:
     def save_results(self, name):
         df = pd.DataFrame()
         df['Scores'] = self.scores
-        df['Alive_Duration'] = self.env.alive_duration
-        df['Epsilon_Discount'] = self.eps_discount
-        df['Learning_Rate'] = self.learning_rate
-        df['Discount_Rate'] = self.discount_rate
+        df['Alive_Duration'] = self.survived_duration
 
         df.to_csv('results/' + name)
 
