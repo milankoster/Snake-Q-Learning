@@ -8,11 +8,20 @@ In the Q Learning folder, we apply classic Q learning with a Q table. The Q tabl
 
 During Q Learning, I attempted several values to observe their affects on the q tables. The dataframes can be found in the `results` folder.
 
-The base values are: 
+The scores of the various models are visualised below. The base values are: 
 - Learning rate: 0.01
 - Epsilon Discount: 0.9992 
 - Discount Rate: 0.95
 
+<img src="https://i.imgur.com/Bc0c5fn.png" width="600" alt="Score results">
+
+We can also visualise the survival duration.
+
+<img src="https://i.imgur.com/bLeS3RB.png" width="600" alt="Alive Duration results">
+
+Interestingly, the best performing model was the model with a 0.100 learning rate at around 9000 episodes. It seems to have had a much greater focus on staying alive than reaching the food. However, the model's performance drops severely the last 300 episodes. 
+
+On average, the model with a 0.001 learning rate did the best. The lowered epsilon also improved the performance. Perhaps a change in both learning rate and epsilon discount could perform even better.
 
 --- 
 
