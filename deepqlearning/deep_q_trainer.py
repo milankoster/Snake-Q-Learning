@@ -1,7 +1,9 @@
-﻿import random
+﻿import gc
+import random
 from collections import deque
 
 import numpy as np
+import pandas as pd
 from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
@@ -19,13 +21,16 @@ class DeepQTrainer:
         self.learning_rate = 0.00025
         self.batch_size = 512
 
-        self.episodes = 10000
+        self.episodes = 200
         self.episode_length = 10000
 
         self.env = DeepQEnvironment()
         self.memory = deque(maxlen=2000)
         self.model = self.create_model()
         self.target_model = self.create_model()
+
+        self.scores = []
+        self.rewards = []
 
     def create_model(self):
         model = Sequential()
@@ -69,23 +74,29 @@ class DeepQTrainer:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def save_model(self, path, episode):
+    def save_model(self, model_name, episode):
         should_save = False
 
         if episode < 10:
             should_save = True
-        if 10 <= episode < 100 and episode % 10 == 0:
+        elif 10 <= episode < 200 and episode % 10 == 0:
             should_save = True
-        elif 100 <= episode < 500 and episode % 50 == 0:
-            should_save = True
-        elif episode >= 500 and episode % 100 == 0:
+        elif episode % 50 == 0:
             should_save = True
 
         if should_save:
-            self.model.save(path + "episode-{}.model".format(episode))
+            self.model.save(f"../models/{model_name}/episode-{episode}.model")
 
-    def train(self, path):
-        for episode in range(self.episodes):
+    def save_results(self, model_name):
+        df = pd.DataFrame()
+        df['Scores'] = self.scores
+        df['Reward'] = self.rewards
+
+        df.to_csv(f'results/{model_name}.csv')
+
+    def train(self, model_name):
+        for episode in range(1, self.episodes + 1):
+            gc.collect()
             self.env = DeepQEnvironment()
 
             current_state = self.env.get_state()
@@ -105,15 +116,19 @@ class DeepQTrainer:
                 self.replay()
 
                 if done:
-                    print(f'episode: {episode + 1}/{self.episodes}, score: {self.env.score}, '
+                    print(f'episode: {episode}/{self.episodes}, score: {self.env.score}, '
                           f'reward: {epi_reward}, epsilon: {self.epsilon}')
-                    self.save_model(path, episode)
-                    break
+                    self.scores.append(self.env.score)
+                    self.rewards.append(epi_reward)
 
-        return
+                    self.save_model(model_name, episode)
+                    self.save_results(model_name)
+                    break
 
 
 if __name__ == '__main__':
-    path = "../models/deepq2/"
+    name = "deepq_base"
+
     deep_q_trainer = DeepQTrainer()
-    deep_q_trainer.train(path)
+    deep_q_trainer.train(name)
+    deep_q_trainer.save_results(name)
