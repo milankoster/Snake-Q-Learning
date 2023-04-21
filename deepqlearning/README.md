@@ -52,3 +52,14 @@ In this case, the model does not learn how to avoid its own body very well at al
 Based on these results the average is even a little lower than expected, around 25.
 
 A future version may benefit from a different training method, such as starting off with a longer body or approaching exploration versus exploitation differently.
+
+
+## Code
+
+The `DeepQEnvironment` inherits from `BaseTrainer` to handle inputs and check safe spots for the state space, which in turn inherits from `BaseSnake` to run the game.
+
+It gives a reward of 10 points per apple gained, a negative reward of -100 points per death, a reward of 1 per step towards food and a negative reward of -1 per away from the food. 
+
+The `DeepQTrainer` uses the `DeepQEnvironment` to train the model. While the snake is alive it takes actions in the environment. Depending on the epsilon value, these actions may be random. The model is updated using memory replay. 
+
+The `DeepQVisualiser` is used to run a game using an existing model. It uses the `DeepQEnvironment` and `BaseVisualiser` for this purpose.
