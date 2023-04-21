@@ -13,11 +13,11 @@ The scores of the different models are shown below. The base values are:
 - Epsilon Discount: 0.9992 
 - Discount Rate: 0.95
 
-<img src="https://i.imgur.com/7BrXPFq.png" width="400" alt="Score results">
+<img src="https://i.imgur.com/7BrXPFq.png" width="600" alt="Score results">
 
 We can also visualise the survival duration.
 
-<img src="https://i.imgur.com/U7oZMY4.png" width="400" alt="Alive Duration results">
+<img src="https://i.imgur.com/U7oZMY4.png" width="600" alt="Alive Duration results">
 
 Interestingly, the best performing model was the model with a 0.100 learning-rate at around 9000 episodes. It seems to have had a much greater focus on staying alive than reaching the food. However, the model's performance drops severely the last 300 episodes. 
 
