@@ -62,6 +62,6 @@ class DeepQVisualiser(BaseVisualiser, DeepQEnvironment):
 
 
 if __name__ == '__main__':
-    path = "../models/deepq2/"
+    path = "../models/deepq_base/"
     deep_q_visualiser = DeepQVisualiser()
     deep_q_visualiser.visualise(path, 50, True)
