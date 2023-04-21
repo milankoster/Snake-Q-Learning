@@ -23,6 +23,8 @@ Interestingly, the best performing model was the model with a 0.100 learning rat
 
 On average, the model with a 0.001 learning rate did the best. The lowered epsilon also improved the performance. Perhaps a change in both learning rate and epsilon discount could perform even better.
 
+While the models do quite well, their largest flaw is their limited sight. They can only see the direction of the snake, relative position of the food and whether the snake's immediate surroundings are safe, causing it to regularly trap itself.
+
 --- 
 
 ## Files
