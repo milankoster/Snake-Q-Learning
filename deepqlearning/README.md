@@ -2,7 +2,6 @@
 
 In the Deep Q Learning folder, we apply deep Q learning with a Neural Network. The training is based on a [project](https://towardsdatascience.com/snake-played-by-a-deep-reinforcement-learning-agent-53f2c4331d36) by Hennie de Harder.
 
----
 
 ## Results
 

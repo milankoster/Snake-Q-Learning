@@ -2,7 +2,6 @@
 
 In the Q Learning directory, we apply classic Q learning with a Q table. The Q table is updated using the [Bellman equation](https://en.wikipedia.org/wiki/Bellman_equation). The training is based on a [project](https://github.com/techtribeyt/snake-q-learning) by techtribeyt.
 
----
 
 ## Results
 
@@ -25,7 +24,6 @@ On average, the model with a 0.001 learning rate did the best. The lower epsilon
 
 While the models do quite well, their performance is limited by their small field of vision. They can only see the direction of the snake, relative position of the food and whether the snake's immediate surroundings are safe, causing it to regularly trap itself.
 
---- 
 
 ## Code
 
