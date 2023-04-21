@@ -1,4 +1,8 @@
-﻿import math
+﻿import os
+
+import keras
+import numpy as np
+import pandas as pd
 
 from common.constants import *
 from common.direction import Direction
@@ -93,3 +97,48 @@ class DeepQEnvironment(BaseTrainer):
 
             if self.collision(ray_x, ray_y):
                 return euclidean_distance(self.pos_x, self.pos_y, ray_x, ray_y) / MAX_DISTANCE
+
+    def run_game(self, model):
+
+        length = self.snake_length()
+        steps_without_food = 0
+
+        while self.alive:
+            state = self.get_state()
+            state = np.reshape(state, (1, self.state_space))
+
+            action_index = np.argmax(model.predict(state, verbose=0)[0])
+            action = Direction(action_index)
+            self.step(action)
+
+            if self.snake_length() != length:
+                steps_without_food = 0
+                length = self.snake_length()
+            else:
+                steps_without_food += 1
+
+            if steps_without_food == 1000:
+                break
+
+        return self.snake_length()
+
+
+if __name__ == '__main__':
+    directory = '../models/deepq_continuous'
+    models = os.listdir(directory)
+
+    scores = []
+
+    for model_count in range(1, 391):
+        if model_count > 10 and model_count % 10 != 0:
+            continue
+
+        model = keras.models.load_model(f"{directory}/episode-{model_count}.model")
+
+        env = DeepQEnvironment()
+        score = env.run_game(model)
+        scores.append([model_count, score])
+        print(f"Score of model {model_count}: {score}")
+
+    df = pd.DataFrame(data=scores)
+    df.to_csv("results/continuous_deepq_results.csv")
