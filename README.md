@@ -1,7 +1,6 @@
 ﻿# Snake Q Learning
 This project explores two approaches to training an agent to play the classic game of Snake using Reinforcement Learning techniques. The aim is to develop an agent that can achieve high scores in the game.
 
----
 
 ## Approaches
 The two approaches I explored are:
@@ -11,7 +10,6 @@ The two approaches I explored are:
 
 2. Deep Q-Learning: This approach uses a neural network to approximate the Q-Table. The neural network takes the current state as input and outputs the expected values of all possible actions. The network is trained using a variant of the Q-Learning algorithm called Deep Q-Learning.
 
----
 
 ## Results
 
@@ -34,7 +32,6 @@ The Deep Q-Learning approach achieved worse results, with an average score of 30
 
 Overall, it seems that the Q-table approach was the most effective method for playing Snake in this particular implementation, but further experimentation with different algorithms and parameters could lead to improved performance of Deep Q Learning in the future.
 
----
 
 ## Usage
 
