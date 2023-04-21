@@ -1,4 +1,6 @@
-﻿import numpy as np
+﻿import os
+
+import numpy as np
 import pandas as pd
 import random
 import pickle
@@ -50,7 +52,9 @@ class QTrainer:
             should_save = True
 
         if should_save:
-            with open(f'../models/qlearning/{episode}.pickle', 'wb') as file:
+            file_name = f'../models/qlearning/{episode}.pickle'
+            os.makedirs(os.path.dirname(file_name), exist_ok=True)
+            with open(file_name, 'wb') as file:
                 pickle.dump(self.q_table, file)
 
     def train(self):
