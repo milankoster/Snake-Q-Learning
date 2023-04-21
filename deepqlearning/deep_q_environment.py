@@ -6,7 +6,7 @@ import pandas as pd
 
 from common.constants import MOVE_SPEED
 from common.direction import Direction
-from base.base_trainer import BaseTrainer
+from common.base_trainer import BaseTrainer
 
 
 class DeepQEnvironment(BaseTrainer):

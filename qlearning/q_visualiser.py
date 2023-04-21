@@ -5,7 +5,7 @@ from common.constants import *
 from common.direction import Direction
 from qlearning.q_environment import QEnvironment
 from qlearning.q_loader import load_q_table
-from base.base_visualiser import BaseVisualiser
+from common.base_visualiser import BaseVisualiser
 
 
 class QVisualiser(BaseVisualiser, QEnvironment):

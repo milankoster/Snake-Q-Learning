@@ -3,7 +3,7 @@
 from common.constants import MOVE_SPEED
 from common.direction import Direction
 from qlearning.q_loader import load_q_table
-from base.base_trainer import BaseTrainer
+from common.base_trainer import BaseTrainer
 
 
 class QEnvironment(BaseTrainer):

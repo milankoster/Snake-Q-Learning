@@ -4,7 +4,7 @@ import pygame
 
 from common.constants import *
 from common.direction import Direction
-from base.base_visualiser import BaseVisualiser
+from common.base_visualiser import BaseVisualiser
 
 
 class ManualSnake(BaseVisualiser):
