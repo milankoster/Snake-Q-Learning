@@ -46,6 +46,10 @@ The model is off to a rough start, because it is no longer given binary indicati
 
 Over time there is a gradual improvement. The model reaches has an average score of around 30, but hovers between 0 and 60. 
 
-In this case, the model does not learn how to avoid its own body very well at all. This may be, because it takes a long time before the snake is of sufficient size to struggle with its tail. As such, the snake does not reach this situation very often. When it does reach the situation, the epsilon has already reached its minimum, meaning there's very little room for exploration.
+In this case, the model does not learn how to avoid its own body very well at all. This may be, because it takes a long time before the snake is of sufficient size to struggle with its tail. As such, the snake does not reach this situation very often. When it does reach the situation, the epsilon has already reached its minimum, meaning there's very little room for exploration. This is also visible when we rerun the models without any exploration.
 
-A future version may benefit a different training method, such as starting off with a longer body or a different approach to exploration vs exploitation.
+<img src="https://i.imgur.com/EXOTH1X.png" width="400" alt="DeepQ Continuous results">
+    
+Based on these results the average is even a little lower than expected, around 25.
+
+A future version may benefit from a different training method, such as starting off with a longer body or approaching exploration versus exploitation differently.
