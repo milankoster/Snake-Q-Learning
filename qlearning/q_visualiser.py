@@ -30,6 +30,7 @@ class QVisualiser(BaseVisualiser, QEnvironment):
         steps_without_food = 0
 
         while self.alive:
+            pygame.event.pump()
             state = self.get_state()
 
             action_index = np.argmax(q_table[state])
