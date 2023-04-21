@@ -30,6 +30,7 @@ class DeepQVisualiser(BaseVisualiser, DeepQEnvironment):
         steps_without_food = 0
 
         while self.alive:
+            pygame.event.pump()
             state = np.reshape(self.get_state(), (1, self.state_space))
 
             act_values = model.predict(state, verbose=0)
