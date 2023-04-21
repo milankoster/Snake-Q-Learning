@@ -88,7 +88,7 @@ class DeepQTrainer:
         if should_save:
             file_name = f'../models/{model_name}/episode-{episode}.model'
             os.makedirs(os.path.dirname(file_name), exist_ok=True)
-            self.model.save(f"../models/{model_name}/episode-{episode}.model")
+            self.model.save(file_name)
 
     def save_results(self, model_name):
         df = pd.DataFrame()
