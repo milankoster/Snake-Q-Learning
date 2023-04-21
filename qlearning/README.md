@@ -1,14 +1,14 @@
 ﻿# Q Learning
 
-In the Q Learning folder, we apply classic Q learning with a Q table. The Q table gets updated according to the [Bellman equation](https://en.wikipedia.org/wiki/Bellman_equation). The training is based on a [project](https://github.com/techtribeyt/snake-q-learning) by techtribeyt.
+In the Q Learning directory, we apply classic Q learning with a Q table. The Q table is updated using the [Bellman equation](https://en.wikipedia.org/wiki/Bellman_equation). The training is based on a [project](https://github.com/techtribeyt/snake-q-learning) by techtribeyt.
 
 ---
 
 ## Results
 
-During Q Learning, I attempted several values to observe their affects on the q tables. The dataframes can be found in the `results` folder.
+During Q Learning, several values were attempted to observe their effects on the q tables. The dataframes can be found in the `results` folder.
 
-The scores of the various models are visualised below. The base values are: 
+The scores of the different models are shown below. The base values are: 
 - Learning rate: 0.01
 - Epsilon Discount: 0.9992 
 - Discount Rate: 0.95
@@ -19,11 +19,11 @@ We can also visualise the survival duration.
 
 <img src="https://i.imgur.com/U7oZMY4.png" width="400" alt="Alive Duration results">
 
-Interestingly, the best performing model was the model with a 0.100 learning rate at around 9000 episodes. It seems to have had a much greater focus on staying alive than reaching the food. However, the model's performance drops severely the last 300 episodes. 
+Interestingly, the best performing model was the model with a 0.100 learning-rate at around 9000 episodes. It seems to have had a much greater focus on staying alive than reaching the food. However, the model's performance drops severely the last 300 episodes. 
 
-On average, the model with a 0.001 learning rate did the best. The lowered epsilon also improved the performance. Perhaps a change in both learning rate and epsilon discount could perform even better.
+On average, the model with a 0.001 learning rate did the best. The lower epsilon also improved the performance. Perhaps further optimization of both learning rate and epsilon discount could lead to better performance.
 
-While the models do quite well, their largest flaw is their limited sight. They can only see the direction of the snake, relative position of the food and whether the snake's immediate surroundings are safe, causing it to regularly trap itself.
+While the models do quite well, their performance is limited by their small field of vision. They can only see the direction of the snake, relative position of the food and whether the snake's immediate surroundings are safe, causing it to regularly trap itself.
 
 --- 
 
@@ -31,9 +31,9 @@ While the models do quite well, their largest flaw is their limited sight. They 
 
 The `QEnvironment` inherits from `BaseTrainer` to handle inputs and check safe spots for the state space, which in turn inherits from `BaseSnake` to run the game.
 
-It gives a reward for 1 per apple gained, and a negative reward of -10 per death, which occurs when the snake runs into a wall or into itself.
+It gives a reward of 1 point per apple gained, and a negative reward of -10 points per death, which occurs when the snake runs into a wall or into itself.
 
-The input consists of binary values. These are as follows:
+The input consists of binary values. These input values are:
 - The snake's direction: Left, Right, Up and Down.
 - The direction of the food: Left, Right, Up and Down.
 - Safety around the snake's head: Left, Right, Up and Down.
