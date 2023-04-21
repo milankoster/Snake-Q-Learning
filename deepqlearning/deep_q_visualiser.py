@@ -11,7 +11,7 @@ from common.base_visualiser import BaseVisualiser
 class DeepQVisualiser(BaseVisualiser, DeepQEnvironment):
     def __init__(self):
         super().__init__()
-        pygame.display.set_caption('Snake with Q Learning')
+        pygame.display.set_caption('Snake with Deep Q Learning')
 
     def draw_game(self, episode):
         self.display.fill(BLUE)
