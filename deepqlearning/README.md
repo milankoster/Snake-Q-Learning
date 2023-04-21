@@ -6,7 +6,7 @@ In the Deep Q Learning folder, we apply deep Q learning with a Neural Network. T
 
 ## Results
 
-During Deep Q Learning, I attempted two tests to observe their affects on the q tables. The dataframes can be found in the `results` folder.
+During Deep Q Learning, I attempted two tests to observe their effects on the q tables. The dataframes can be found in the `results` folder.
 
 Both attempt used a neural network that was shaped as follows:
 
@@ -16,7 +16,7 @@ Both attempt used a neural network that was shaped as follows:
 
 ### Base Model
 
-The 'base' model uses the same 12 states as the normal q learning version. The inputs are all binary and indicate the snake's direction, direction of the food and whether the spaces surrounding the snake's head are safe.
+The 'base' model uses the same 12 states as the normal q learning version. The inputs are all binary and indicate the snake's direction, the direction of the food, and whether the spaces surrounding the snake's head are safe.
 
 The scores are very erratic, which means the model is very inconsistent.
 
@@ -42,9 +42,9 @@ The continuous states are the position of the head, the position of the food, th
 
 <img src="https://i.imgur.com/3QYbi48.png" width="400" alt="DeepQ Continuous results">
 
-The model is off to a rough start, because it is no longer given binary indications to where the food is. Rather than an 'Up', 'Down', 'Left' and 'Right' approach, it is given the distance and angle. After a while, the model does figure it out. However, when visualised, it often goes a block too up or down, then corrects itself when it gets close to the food.
+The model is off to a rough start, because it is no longer given binary indications of the food's location. Rather than an 'Up', 'Down', 'Left' and 'Right' approach, it is given the distance and angle. After a while, the model does figure it out. However, when visualised, it often goes a block too up or down, then corrects itself when it gets close to the food.
 
-Over time there is a gradual improvement. The model reaches has an average score of around 30, but hovers between 0 and 60. 
+Over time there is a gradual improvement. The model reaches an average score of around 30, but hovers between 0 and 60. 
 
 In this case, the model does not learn how to avoid its own body very well at all. This may be, because it takes a long time before the snake is of sufficient size to struggle with its tail. As such, the snake does not reach this situation very often. When it does reach the situation, the epsilon has already reached its minimum, meaning there's very little room for exploration. This is also visible when we rerun the models without any exploration.
 
