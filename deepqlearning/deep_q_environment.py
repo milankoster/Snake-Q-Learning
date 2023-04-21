@@ -102,6 +102,7 @@ if __name__ == '__main__':
 
         env = DeepQEnvironment()
         score = env.run_game(model)
+        scores.append([model_count, score])
         print(f"Score of model {model_count}: {score}")
 
     df = pd.DataFrame(data=scores)
