@@ -141,4 +141,4 @@ if __name__ == '__main__':
         print(f"Score of model {model_count}: {score}")
 
     df = pd.DataFrame(data=scores)
-    df.to_csv("results/continuous_deepq_results.csv")
+    df.to_csv("results/deepq_continuous_results.csv")
