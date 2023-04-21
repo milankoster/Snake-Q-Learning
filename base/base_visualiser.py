@@ -1,7 +1,7 @@
 ﻿import pygame
 
 from common.constants import *
-from snake.base_snake import BaseSnake
+from base.base_snake import BaseSnake
 
 
 class BaseVisualiser(BaseSnake):

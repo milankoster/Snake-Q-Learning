@@ -1,6 +1,6 @@
 ﻿from common.constants import MOVE_SPEED
 from common.direction import Direction
-from snake.base_trainer import BaseTrainer
+from base.base_trainer import BaseTrainer
 
 
 class DeepQEnvironment(BaseTrainer):

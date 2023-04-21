@@ -5,7 +5,7 @@ import tensorflow as tf
 from common.constants import *
 from common.direction import Direction
 from deepqlearning.deep_q_environment import DeepQEnvironment
-from snake.base_visualiser import BaseVisualiser
+from base.base_visualiser import BaseVisualiser
 
 
 class DeepQVisualiser(BaseVisualiser, DeepQEnvironment):

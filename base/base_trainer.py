@@ -1,5 +1,5 @@
 ﻿from common.direction import Direction
-from snake.base_snake import BaseSnake
+from base.base_snake import BaseSnake
 
 
 class BaseTrainer(BaseSnake):
