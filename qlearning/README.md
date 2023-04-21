@@ -27,7 +27,7 @@ While the models do quite well, their largest flaw is their limited sight. They 
 
 --- 
 
-## Files
+## Code
 
 The `QEnvironment` inherits from `BaseTrainer` to handle inputs and check safe spots for the state space, which in turn inherits from `BaseSnake` to run the game.
 
