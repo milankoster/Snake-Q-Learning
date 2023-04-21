@@ -37,6 +37,13 @@ Overall, it seems that the Q-table approach was the most effective method for pl
 
 ## Usage
 
-[manual]
+This project contains 7 runnable files:
 
+1. [manual/manual_snake.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/manual/manual_snake.py): Manually play snake by yourself. See if you can beat the AI's scores!
+2. [qlearning/q_trainer.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/qlearning/q_trainer.py): Train your own model using a Q Table. The results are stored in `models/qlearning`. This is required to run the other qlearning scripts. 
+3. [qlearning/q_visualiser.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/qlearning/q_visualiser.py): Watch the Q table model play a game of snake. By default, base generation 10000 is shown. 
+4. [qlearning/q_replay.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/qlearning/q_replay.py): Watch the Q table model improve over time as it plays multiple games of snake, starting at generation 20.  
+5. [deepqlearning/deep_q_trainer.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/deepqlearning/deep_q_trainer.py): Train your own model using deep q learning. By default, the results are stored in `models/deepq_base`. This is required to run the other deep q learning scripts. 
+6. [deepqlearning/deep_q_visualiser.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/deepqlearning/deep_q_visualiser.py): Watch the deep neural network play a game of snake. By default, base generation 50 is shown.
+7. [deepqlearning/deep_q_environment.py](https://github.com/milankoster/Snake-Q-Learning/blob/master/deepqlearning/deep_q_environment.py): Assess the performance of deep q models by running all models divisible by 10.
 
