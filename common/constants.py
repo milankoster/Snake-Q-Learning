@@ -1,11 +1,16 @@
 ﻿# Game
+import math
+
 TICK_SPEED = 30
 MOVE_SPEED = 10
 
 # Display Sizes
+BLOCK_SIZE = 10
 DIS_WIDTH = 600
 DIS_HEIGHT = 400
-BLOCK_SIZE = 10
+DIS_SURFACE = DIS_WIDTH * DIS_HEIGHT
+MAX_DISTANCE = math.sqrt(DIS_WIDTH**2 + DIS_HEIGHT**2)
+
 
 # Colors
 RED = (255, 0, 0)
